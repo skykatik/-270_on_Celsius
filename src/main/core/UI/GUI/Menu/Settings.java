@@ -84,7 +84,7 @@ public class Settings {
     private static void exitBtn() {
         Settings.delete();
         if (!start) {
-            Main.create();
+            Main.instance.show();
         }
     }
 

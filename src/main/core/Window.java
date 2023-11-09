@@ -73,7 +73,7 @@ public class Window {
         glMatrixMode(GL_MODELVIEW);
 
         TextureLoader.preLoadResources();
-        Main.create();
+        Main.instance.show();
 
         log("Init status: true\n");
     }
@@ -93,6 +93,8 @@ public class Window {
                 drawTexture(assetsDir("World/Other/background.png"), 0, 0, 1, true);
             }
             updateGUI();
+
+            Global.scene.processUpdate();
 
             glfwSwapBuffers(glfwWindow);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -4,6 +4,11 @@ public final class SimpleColor {
     public static final SimpleColor WHITE = fromRGBA(255, 255, 255, 255);
     public static final SimpleColor BLACK = fromRGBA(0, 0, 0, 0);
 
+    public static final SimpleColor DEFAULT_PANEL = fromRGBA(40, 40, 40, 240);
+    public static final SimpleColor DEFAULT_CLICK_BUTTON = fromRGBA(236, 236, 236, 55);
+    // Например кнопка Play
+    public static final SimpleColor DEFAULT_ACCENT_BUTTON = fromRGBA(255, 80, 0, 55);
+
     private int value; // argb
 
     private static int clamp(int c) {

@@ -40,7 +40,7 @@ public class Pause {
     private static void settingsBtn() {
         Settings.create();
         if (!start) {
-            Main.delete();
+            Main.instance.hide();
         } else {
             Pause.delete();
         }

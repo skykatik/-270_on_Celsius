@@ -1,6 +1,9 @@
 package core.UI.GUI.Menu;
 
 import core.EventHandling.Logging.Logger;
+import core.UI.API.Dialog;
+import core.UI.API.Group;
+import core.UI.API.Panel;
 import core.Utils.SimpleColor;
 import java.awt.Desktop;
 import java.net.URI;
@@ -9,20 +12,39 @@ import static core.EventHandling.Logging.Logger.printException;
 import static core.UI.GUI.CreateElement.*;
 import static core.Window.*;
 
-public class Main {
-    public static void create() {
-        //default coordinate system - full hd
-        createPanel(0, 965, 1920, 115, "defPan", true, "MainMenu");
+public class Main extends Dialog {
 
-        createPictureButton(1830, 990, assetsDir("UI/discordIcon.png"), "DiscordButton", "MainMenu", Main::discordBtn);
-        createButton(822, 990, 240, 65, getName("Exit"), null, false, new SimpleColor(236, 236, 236, 55), "MainMenu", Main::exitBtn);
-        createButton(548, 990, 240, 65, getName("Settings"), null, false, new SimpleColor(236, 236, 236, 55), "MainMenu", Main::settingsBtn);
-        createButton(46, 990, 240, 65, getName("Play"), null, false, new SimpleColor(255, 80, 0, 55), "MainMenu", Main::playBtn);
-    }
+    public static final Main instance = new Main();
 
-    public static void delete() {
-        buttons.values().stream().filter(button -> button.group.equals("MainMenu")).forEach(button -> button.visible = false);
-        panels.get("defPan").visible = false;
+    private Main() {
+        super(null);
+
+        addPanel()
+                .setPosition(0, 965)
+                .setSize(1920, 115)
+                .setSimple(true);
+
+        addImageButton(Main::discordBtn)
+                .setPosition(1830, 990)
+                .setImage("UI/discordIcon.png");
+
+        addButton(Main::exitBtn)
+                .setPosition(822, 990)
+                .setSize(240, 65)
+                .setName(getName("Exit"))
+                .setColor(SimpleColor.DEFAULT_CLICK_BUTTON);
+
+        addButton(this::settingsBtn)
+                .setPosition(548, 990)
+                .setSize(240, 65)
+                .setName(getName("Settings"))
+                .setColor(SimpleColor.DEFAULT_CLICK_BUTTON);
+
+        addButton(this::playBtn)
+                .setPosition(46, 990)
+                .setSize(240, 65)
+                .setName(getName("Play"))
+                .setColor(SimpleColor.DEFAULT_ACCENT_BUTTON);
     }
 
     private static void discordBtn() {
@@ -38,17 +60,17 @@ public class Main {
         Logger.logExit(0);
     }
 
-    private static void settingsBtn() {
+    private void settingsBtn() {
         Settings.create();
         if (!start) {
-            Main.delete();
+            hide();
         } else {
             Pause.delete();
         }
     }
 
-    private static void playBtn() {
-        Main.delete();
+    private void playBtn() {
+        hide();
         CreatePlanet.create();
     }
 }

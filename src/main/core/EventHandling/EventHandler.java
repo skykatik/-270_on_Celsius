@@ -3,18 +3,26 @@ package core.EventHandling;
 import core.EventHandling.Logging.Config;
 import core.EventHandling.Logging.Json;
 import core.EventHandling.Logging.Logger;
+import core.UI.API.Element;
 import core.UI.GUI.CreateElement;
-import core.UI.GUI.Menu.*;
+import core.UI.GUI.Menu.MouseCalibration;
+import core.UI.GUI.Menu.Pause;
+import core.UI.GUI.Menu.Settings;
 import core.UI.GUI.Objects.ButtonObject;
 import core.UI.GUI.Objects.SliderObject;
-import core.World.Creatures.Player.Player;
 import core.Utils.SimpleColor;
+import core.World.Creatures.Player.Player;
 import core.World.WorldGenerator;
-import org.lwjgl.glfw.*;
-import java.awt.Point;
-import static core.Utils.Commandline.updateLine;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
+import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
+
+import java.awt.*;
+
 import static core.EventHandling.Logging.Logger.log;
 import static core.UI.GUI.CreateElement.*;
+import static core.Utils.Commandline.updateLine;
 import static core.Window.*;
 import static core.World.Creatures.Physics.updates;
 import static org.lwjgl.glfw.GLFW.*;
@@ -91,6 +99,10 @@ public class EventHandler extends Thread {
 
     public static boolean getMousePress() {
         return glfwGetMouseButton(glfwWindow, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS;
+    }
+
+    public static boolean isMousePressed(Element button) {
+        return getRectanglePress(button.x(), button.y(), button.x() + button.width(), button.y() + button.height());
     }
 
     public static boolean getRectanglePress(int x, int y, int x1, int y1) {
