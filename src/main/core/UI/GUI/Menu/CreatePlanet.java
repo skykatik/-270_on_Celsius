@@ -1,35 +1,73 @@
 package core.UI.GUI.Menu;
 
+import core.UI.API.Dialog;
+import core.UI.API.Image;
+import core.UI.API.Slider;
 import core.Utils.SimpleColor;
 import core.World.WorldGenerator;
 
 import static core.EventHandling.Logging.Json.getName;
-import static core.UI.GUI.CreateElement.*;
-import static core.Window.assetsDir;
+import static core.Utils.SimpleColor.fromRGBA;
 
-public class CreatePlanet {
+public class CreatePlanet extends Dialog {
 
-    public static void create() {
-        createPanel(20, 20, 1880, 200, "downPanel", false, "WorldGenerator");
-        createPanel(20, 240, 1400, 820, "leftPanel", false, "WorldGenerator");
-        createPanel(1440, 240, 460, 820, "rightPanel", false, "WorldGenerator");
+    // TODO ресетать бульки?
 
-        createPicture(1460, 620, 1, "planetBackground", assetsDir("World/WorldGenerator/skyBackgroundPlanet.png"), "WorldGenerator");
-        createPicture(1510, 670, 2, "planet", assetsDir("World/WorldGenerator/planetMini.png"), "WorldGenerator");
+    public static final CreatePlanet instance = new CreatePlanet();
 
-        createButton(1460, 260, 420, 67, getName("GenerateWorld"), null, true, new SimpleColor(255, 80, 0, 55), "WorldGenerator", WorldGenerator::generateWorld);
-        createSwapButton(70, 980, 32, 32, getName("GenerateSimpleWorld"), getName("GenerateSimpleWorldPrompt"), false, new SimpleColor(236, 236, 236, 55), "WorldGenerator");
-        createSwapButton(70, 910, 32, 32, getName("GenerateCreatures"), getName("GenerateCreaturesPrompt"), false, new SimpleColor(236, 236, 236, 55), true, "WorldGenerator");
-        createSwapButton(70, 840, 32, 32, getName("RandomSpawn"), getName("RandomSpawnPrompt"), false, new SimpleColor(236, 236, 236, 55), "WorldGenerator");
+    public boolean simpleGeneration, randomSpawn, generateCreatures = true;
 
-        createSlider(1460, 340, 420, 20, 2500, "worldSize", new SimpleColor(40, 40, 40, 240), new SimpleColor(255, 80, 0, 119));
+    private final Image planetImage;
+    private final Slider slider;
+
+    private CreatePlanet() {
+        addPanel().set(20, 20, 1880, 200);
+        addPanel().set(20, 240, 1400, 820);
+        addPanel().set(1440, 240, 460, 820);
+
+        addToggleButton(() -> simpleGeneration = !simpleGeneration)
+                .set(70, 980, 32, 32)
+                .setName(getName("GenerateSimpleWorld"))
+                .setPrompt(getName("GenerateSimpleWorldPrompt"))
+                .setColor(SimpleColor.DEFAULT_CLICK_BUTTON);
+        addToggleButton(() -> randomSpawn = !randomSpawn)
+                .set(70, 840, 32, 32)
+                .setName(getName("RandomSpawn"))
+                .setPrompt(getName("RandomSpawnPrompt"))
+                .setColor(SimpleColor.DEFAULT_CLICK_BUTTON);
+        addToggleButton(() -> generateCreatures = !generateCreatures)
+                .set(70, 910, 32, 32)
+                .setName(getName("GenerateCreatures"))
+                .setPrompt(getName("GenerateCreaturesPrompt"))
+                .setColor(SimpleColor.DEFAULT_CLICK_BUTTON);
+
+        addButton(WorldGenerator::generateWorld)
+                .set(1460, 260, 420, 67)
+                .setName(getName("GenerateWorld"))
+                .setSimple(true);
+
+        addImage(1460, 620, "World/WorldGenerator/skyBackgroundPlanet.png");
+
+        planetImage = addImage(1510, 670, "World/WorldGenerator/planetMini.png");
+
+        slider = addSlider((pos, worldSize) -> {
+            String pic;
+            if (pos >= worldSize / 1.5f) {
+                pic = "planetBig.png";
+            } else if (pos >= worldSize / 3) {
+                pic = "planetAverage.png";
+            } else {
+                pic = "planetMini.png";
+            }
+            planetImage.setImage("World/WorldGenerator/" + pic);
+        })
+        .set(1460, 340, 420, 20)
+        .setMax(2500)
+        .setSliderColor(fromRGBA(40, 40, 40, 240))
+        .setDotColor(fromRGBA(255, 80, 0, 119));
     }
 
-    public static void delete() {
-        panels.values().stream().filter(button -> button.group.equals("WorldGenerator")).forEach(button -> button.visible = false);
-        buttons.values().stream().filter(button -> button.group.equals("WorldGenerator")).forEach(button -> button.visible = false);
-        texts.values().stream().filter(button -> button.group.equals("WorldGeneratorState")).forEach(button -> button.visible = false);
-
-        sliders.get("worldSize").visible = false;
+    public int getWorldSize() {
+        return slider.getSliderPos() + 20;
     }
 }

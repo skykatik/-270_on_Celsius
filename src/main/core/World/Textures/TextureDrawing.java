@@ -1,6 +1,6 @@
 package core.World.Textures;
 
-import core.UI.API.Button;
+import core.UI.API.BaseButton;
 import core.Utils.Commandline;
 import core.EventHandling.EventHandler;
 import core.UI.GUI.Objects.ButtonObject;
@@ -369,7 +369,7 @@ public class TextureDrawing {
         glPopMatrix();
     }
 
-    public static void drawPrompt(Button button) {
+    public static void drawPrompt(BaseButton<?> button) {
         if (getFromConfig("ShowPrompts").equals("true") && new Rectangle(button.x(), button.y(), button.width(), button.height()).contains(getMousePos()) && System.currentTimeMillis() - EventHandler.lastMouseMovedTime >= 1000 && button.prompt != null) {
             drawRectangleText(EventHandler.getMousePos().x, EventHandler.getMousePos().y, 0, button.prompt, false, new SimpleColor(40, 40, 40, 240));
         }

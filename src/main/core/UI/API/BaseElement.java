@@ -8,12 +8,11 @@ public abstract non-sealed class BaseElement<E extends BaseElement<E>> implement
     protected boolean visible = true;
 
     protected BaseElement(Group parent) {
-        // assert parent != this
         this.parent = parent;
     }
 
     @SuppressWarnings("unchecked")
-    private E as() {
+    protected E as() {
         return (E) this;
     }
 
@@ -62,6 +61,13 @@ public abstract non-sealed class BaseElement<E extends BaseElement<E>> implement
     }
 
     @Override
+    public E set(int x, int y, int width, int height) {
+        setPosition(x, y);
+        setSize(width, height);
+        return as();
+    }
+
+    @Override
     public E setX(int x) {
         this.x = x;
         return as();
@@ -75,8 +81,8 @@ public abstract non-sealed class BaseElement<E extends BaseElement<E>> implement
 
     @Override
     public E setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
+        setX(x);
+        setY(y);
         return as();
     }
 

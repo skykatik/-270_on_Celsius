@@ -2,23 +2,20 @@ package core.UI.GUI.Menu;
 
 import core.EventHandling.Logging.Logger;
 import core.UI.API.Dialog;
-import core.UI.API.Group;
-import core.UI.API.Panel;
 import core.Utils.SimpleColor;
-import java.awt.Desktop;
+
+import java.awt.*;
 import java.net.URI;
+
 import static core.EventHandling.Logging.Json.getName;
 import static core.EventHandling.Logging.Logger.printException;
-import static core.UI.GUI.CreateElement.*;
-import static core.Window.*;
+import static core.Window.start;
 
 public class Main extends Dialog {
 
     public static final Main instance = new Main();
 
     private Main() {
-        super(null);
-
         addPanel()
                 .setPosition(0, 965)
                 .setSize(1920, 115)
@@ -71,6 +68,6 @@ public class Main extends Dialog {
 
     private void playBtn() {
         hide();
-        CreatePlanet.create();
+        CreatePlanet.instance.show();
     }
 }

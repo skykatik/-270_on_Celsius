@@ -23,6 +23,7 @@ public sealed interface Element permits BaseElement, Group {
 
     Element setSize(int width, int height);
 
+    Element set(int x, int y, int width, int height);
     Element setX(int x);
     Element setY(int y);
     Element setPosition(int x, int y);

@@ -4,6 +4,10 @@ import core.Global;
 
 public abstract class Dialog extends BaseGroup<Dialog> {
 
+    protected Dialog() {
+        this(null);
+    }
+
     protected Dialog(Group parent) {
         super(parent);
     }

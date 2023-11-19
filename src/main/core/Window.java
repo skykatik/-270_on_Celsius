@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.file.Path;
+
 import static core.EventHandling.Logging.Logger.log;
 import static core.World.Textures.TextureDrawing.*;
 import static core.World.Textures.TextureLoader.BufferedImageEncoder;
@@ -95,10 +96,12 @@ public class Window {
             updateGUI();
 
             Global.scene.processUpdate();
+            EventHandler.prevMousePos.setLocation(EventHandler.mousePos);
 
             glfwSwapBuffers(glfwWindow);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             glfwPollEvents();
+            EventHandler.mouseMoved = EventHandler.mousePos.distanceSq(EventHandler.prevMousePos) > 0;
 
             fps++;
         }

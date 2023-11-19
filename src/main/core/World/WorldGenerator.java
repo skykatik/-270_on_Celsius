@@ -1,6 +1,5 @@
 package core.World;
 
-import core.EventHandling.Logging.Json;
 import core.UI.GUI.Menu.CreatePlanet;
 import core.Utils.ArrayUtils;
 import core.Window;
@@ -118,17 +117,16 @@ public class WorldGenerator {
     }
 
     public static void generateWorld() {
-        int SizeX = getSliderPos("worldSize") + 20;
-        int SizeY = getSliderPos("worldSize") + 20;
-        boolean simple = buttons.get(Json.getName("GenerateSimpleWorld")).isClicked;
-        boolean randomSpawn = buttons.get(Json.getName("RandomSpawn")).isClicked;
-        boolean creatures = buttons.get(Json.getName("GenerateCreatures")).isClicked;
+        int size = CreatePlanet.instance.getWorldSize();
+        boolean simple = CreatePlanet.instance.simpleGeneration;
+        boolean randomSpawn = CreatePlanet.instance.randomSpawn;
+        boolean creatures = CreatePlanet.instance.generateCreatures;
 
-        log("\nWorld generator: version: 1.0, written at dev 0.0.0.5" + "\nWorld generator: starting generating world at size: x - " + SizeX + ", y - " + SizeY + " (" + SizeX * SizeY + "); with arguments 'simple: " + simple + ", random spawn: " + randomSpawn + "'");
+        log("\nWorld generator: version: 1.0, written at dev 0.0.0.5" + "\nWorld generator: starting generating world at size: x - " + size + ", y - " + size + " (" + size * size + "); with arguments 'simple: " + simple + ", random spawn: " + randomSpawn + "'");
 
-        StaticObjects = new short[(SizeX + 1) * (SizeY + 1)];
-        WorldGenerator.SizeX = SizeX;
-        WorldGenerator.SizeY = SizeY;
+        StaticObjects = new short[(size + 1) * (size + 1)];
+        WorldGenerator.SizeX = size;
+        WorldGenerator.SizeY = size;
 
         generateBlocks(simple);
         generateDynamicsObjects(randomSpawn);
@@ -452,7 +450,7 @@ public class WorldGenerator {
     }
 
     public static void start(boolean generateCreatures) {
-        CreatePlanet.delete();
+        CreatePlanet.instance.hide();
 
         new Physics().start();
         if (generateCreatures) {
